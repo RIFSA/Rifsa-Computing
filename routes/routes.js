@@ -8,7 +8,7 @@ import { articlePost, findArticles, updateArticle } from "../controller/article.
 
 const router = express.Router();
 
-router.get("/users",verifyToken, getUsers);
+router.get("/users", getUsers);
 router.post("/register", Register);
 router.post("/login", Login);
 // router.get("/token", refreshToken);
