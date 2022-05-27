@@ -1,29 +1,33 @@
 ### Get User (Token expires after 60s)
-GET  http://localhost:5000/users
+GET  http://34.101.78.157:5000/users
 Authorization: Bearer <token>
 
 
 
 ### Register User
-POST http://localhost:5000/register
+POST http://34.101.78.157:5000/register
 Content-Type: application/json
 
 {
-    "nama": "randy23561",
+    "name": "tesnama1",
     "email": "tesemail1234@gmail.com",
     "password": "1234567",
     "rePassword": "1234567"
 }
 
-### Login
-POST http://localhost:5000/login
+POST http://34.101.78.157:5000/login
 Content-Type: application/json
 
 {
-    "email": "tesemail123@gmail.com",
+    "email": "tesemail1234@gmail.com",
     "password": "1234567"
 }
 
 ### Get New Token
-GET http://localhost:5000/token
+GET http://34.101.78.157:5000/token
 Content-Type: application/json
+
+###
+SERVER : 34.101.78.157
+PORT : 5000
+
