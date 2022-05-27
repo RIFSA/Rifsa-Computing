@@ -1,10 +1,11 @@
+### Get User (Token expires after 60s)
 GET  http://34.101.78.157:5000/users
+Authorization: Bearer <token>
 
 
 
-
-###
-POST http://34.101.78.157:5000/users
+### Register User
+POST http://34.101.78.157:5000/register
 Content-Type: application/json
 
 {
@@ -14,7 +15,6 @@ Content-Type: application/json
     "rePassword": "1234567"
 }
 
-###
 POST http://34.101.78.157:5000/login
 Content-Type: application/json
 
@@ -23,6 +23,11 @@ Content-Type: application/json
     "password": "1234567"
 }
 
+### Get New Token
+GET http://34.101.78.157:5000/token
+Content-Type: application/json
+
 ###
 SERVER : 34.101.78.157
 PORT : 5000
+
