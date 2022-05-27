@@ -27,6 +27,9 @@ Content-Type: application/json
 GET http://34.101.78.157:5000/token
 Content-Type: application/json
 
+### Logout
+DELETE http://localhost:5000/logout
+Content-Type: application/json
 ###
 SERVER : 34.101.78.157
 PORT : 5000
