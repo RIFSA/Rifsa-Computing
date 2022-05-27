@@ -1,10 +1,11 @@
+### Get User (Token expires after 60s)
 GET  http://localhost:5000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjI5LCJuYW1hIjoicmFuZHkyMzU2MSIsImVtYWlsIjoidGVzZW1haWwxMkBnbWFpbC5jb20iLCJpYXQiOjE2NTIzODIxNjcsImV4cCI6MTY1MjM4MjE4N30.GT_hQ4qLLWd9jcIyut1DAFYeQ21ydIAItSaUxC4bt2o
+Authorization: Bearer <token>
 
 
 
-###
-POST http://localhost:5000/users
+### Register User
+POST http://localhost:5000/register
 Content-Type: application/json
 
 {
@@ -14,7 +15,7 @@ Content-Type: application/json
     "rePassword": "1234567"
 }
 
-###
+### Login
 POST http://localhost:5000/login
 Content-Type: application/json
 
@@ -23,13 +24,6 @@ Content-Type: application/json
     "password": "1234567"
 }
 
-###
-POST http://localhost:5000/article
+### Get New Token
+GET http://localhost:5000/token
 Content-Type: application/json
-
-{
-    "title":"sasasasasa",
-    "image":"sasasasaasa.jpg",
-    "description":"savbhjavshjavfjavfajhvfjhavsfhjasvfhj"
-}
-

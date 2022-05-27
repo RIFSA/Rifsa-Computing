@@ -1,8 +1,29 @@
 import Users from "../models/user.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {
+    registerValidation,
+    loginValidation
+} from "../config/validation.js"
+import crypto from "crypto"
 
-export const getUsers = async(req, res)=> {
+export const getToken = async (req, res, next) => {
+    const {
+        token
+    } = req.body
+    const tokenExist = await Users.findOne({
+        where: {
+            refresh_token: token
+        }
+    })
+    if (!tokenExist) return res.status(403).json({
+        status: res.statusCode,
+        message: "Unauthorized",
+    });
+    next();
+}
+
+export const getUsers = async (req, res) => {
     try {
         const users = await Users.findAll({
             attributes: ['id', 'name', 'email']
@@ -10,24 +31,45 @@ export const getUsers = async(req, res)=> {
         return res.status(200).json({
             status: res.statusCode,
             message: "Sukses",
-            data: users});
+            data: users
+        });
     } catch (error) {
-       console.log(error); 
+        console.log(error);
     }
 }
 
-export const Register = async(req, res)=> {
-    const {name, email, password, rePassword} = req.body;
-    if(password !== rePassword)
-    return res.status(400).json({
-        status: res.statusCode,
-        message: 'Password dan rePassword tidak cocok !'});
+export const Register = async (req, res) => {
+    const {
+        name,
+        email,
+        password,
+        rePassword
+    } = req.body;
 
-    // const emailExist = await Users.findOne({email: req.body.email})
-    // if(emailExist) return res.status(400).json({
-    //     status: res.statusCode,
-    //     message: 'Email Sudah digunakan !'
-    // })
+    const { error } = await registerValidation(req.body)
+    if (error) {
+        return res.status(400).json({
+            status: res.statusCode,
+            message: error.details[0].message
+        });
+    }
+
+
+    if (password !== rePassword)
+        return res.status(400).json({
+            status: res.statusCode,
+            message: 'Password dan rePassword tidak cocok !'
+        });
+
+    const emailExist = await Users.findOne({
+        where: {
+            email: req.body.email
+        }
+    })
+    if (emailExist) return res.status(400).json({
+        status: res.statusCode,
+        message: 'Email Sudah digunakan !'
+    })
 
     const salt = await bcrypt.genSalt(10);
     const hashPassword = await bcrypt.hash(req.body.password, salt);
@@ -43,8 +85,9 @@ export const Register = async(req, res)=> {
         res.status(200).json({
             status: res.statusCode,
             message: 'Berhasil membuat user baru',
-            data: saveUser})
-    }catch(err){
+            data: saveUser
+        })
+    } catch (err) {
         res.status(400).json({
             status: res.statusCode,
             message: 'Gagal membuat user baru'
@@ -52,47 +95,89 @@ export const Register = async(req, res)=> {
     }
 }
 
-export const Login = async(req, res)=>{
-    // try {
-        const user = await Users.findAll({
-            where: {
-                email: req.body.email
-            }
-        });
-
-        if (user == '') {
-            return res.status(400).json({
-                status:res.statusCode,
-                message: 'Email tidak ditemukan'
-            });
+export const Login = async (req, res) => {
+    const user = await Users.findAll({
+        where: {
+            email: req.body.email
         }
-        const match = await bcrypt.compare(req.body.password, user[0].password);
-        if(!match) { return res.status(404).json({message: "wrong password"});}
-        const idUser = user[0].id;
-        const name = user[0].name;
-        const email = user[0].email;
-        const accessToken = jwt.sign({idUser, name, email}, process.env.ACCESS_TOKEN_SECRET,{
-            expiresIn: '20s'
-        });
-        const refreshToken = jwt.sign({idUser, name, email}, process.env.REFRESH_TOKEN_SECRET,{
-            expiresIn: '7d'
-        });
-        await Users.update({refresh_token:refreshToken},{
-            where: {
-                id: idUser
-            }
-        });
-        res.cookie('refreshToken', refreshToken, {
-            httpOnly: true,
-            maxAge: 24 * 60 * 60 * 1000
-        });
-        res.status(200).json({
-            status:res.statusCode,
-            message: 'Berhasil Login',
-            token: accessToken
-        });
+    });
 
-    // } catch (error) {
-    //     res.status(404).json({message: "Email tidak ditemukan"});
-    // }
+    if (user == '') {
+        return res.status(400).json({
+            status: res.statusCode,
+            message: 'Email tidak ditemukan'
+        });
+    }
+    const match = await bcrypt.compare(req.body.password, user[0].password);
+    if (!match) {
+        return res.status(403).json({
+            message: "wrong password"
+        });
+    }
+
+    const idUser = user[0].id;
+    const name = user[0].name;
+    const email = user[0].email;
+    const accessToken = jwt.sign({
+            idUser,
+            name,
+            email
+        },
+        process.env.ACCESS_TOKEN_SECRET, {
+            expiresIn: '60s'
+        }
+    );
+    const refreshToken = jwt.sign({
+            idUser,
+            name,
+            email
+        },
+        process.env.REFRESH_TOKEN_SECRET, {
+            expiresIn: '1d'
+        }
+    );
+    await Users.update({
+        refresh_token: refreshToken
+    }, {
+        where: {
+            id: idUser
+        }
+    });
+    res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        maxAge: 24 * 60 * 60 * 1000
+    });
+    res.status(200).json({
+        status: res.statusCode,
+        message: 'Berhasil Login',
+        token: accessToken
+    });
+}
+
+export const Logout = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.status(401).json({
+        status: res.statusCode,
+        message: "No Token Found"
+    });
+    const user = await Users.findAll({
+        where: {
+            refresh_token: refreshToken
+        }
+    });
+    if (!user[0]) return res.status(401).json({
+        status: res.statusCode,
+        message: "No User Found"
+    });
+    const idUser = user[0].id
+    await Users.update({refresh_token: null}, {
+        where: {
+            id: idUser
+        }
+    });
+    res.clearCookie('refreshToken')
+    return res.status(200).json({
+        status: res.statusCode,
+        message: "Logged out successfully"
+    });
 }
