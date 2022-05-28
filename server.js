@@ -5,6 +5,7 @@ import router from "./routes/routes.js";
 import cookieParser from "cookie-parser";
 import bodyParser from "body-parser"
 import cors from "cors";
+import FileUpload from "express-fileupload"
 
 
 dotenv.config();
@@ -13,6 +14,8 @@ dotenv.config();
 const app = express();
 
 app.use(cors({credential: true, origin:'*'}));
+app.use(FileUpload())
+app.use(express.static("public"))
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(express.json());
