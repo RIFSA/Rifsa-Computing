@@ -5,7 +5,6 @@ import {
     registerValidation,
     loginValidation
 } from "../config/validation.js"
-import crypto from "crypto"
 
 export const getToken = async (req, res, next) => {
     const {
@@ -179,5 +178,33 @@ export const Logout = async (req, res) => {
     return res.status(200).json({
         status: res.statusCode,
         message: "Logged out successfully"
+    });
+}
+
+export const Delete = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.status(401).json({
+        status: res.statusCode,
+        message: "No Token Found"
+    });
+    const user = await Users.findAll({
+        where: {
+            refresh_token: refreshToken
+        }
+    });
+    if (!user[0]) return res.status(401).json({
+        status: res.statusCode,
+        message: "No User Found"
+    });
+    const idUser = user[0].id
+    await Users.destroy({
+        where: {
+            id: idUser
+        }
+    });
+    res.clearCookie('refreshToken')
+    return res.status(200).json({
+        status: res.statusCode,
+        message: "Account deleted successfully"
     });
 }
