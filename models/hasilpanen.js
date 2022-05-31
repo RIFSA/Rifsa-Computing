@@ -7,7 +7,7 @@ const HasilPanen = db.define('hasilpanen',{
     },
     tanggal: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
     },
     jenis: {
         type: String,
@@ -23,7 +23,7 @@ const HasilPanen = db.define('hasilpanen',{
     },
     createdAt: {
         type: String,
-        default: Date.now()
+        default: Date.now(),
     },
     updatedAt: {
         type: Date,

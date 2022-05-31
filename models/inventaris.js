@@ -22,7 +22,7 @@ const Inventaris = db.define('inventaris',{
     },
     createdAt: {
         type: String,
-        default: Date.now()
+        default: Date.now(),
     },
     updatedAt: {
         type: Date,
