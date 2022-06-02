@@ -71,19 +71,24 @@ export const getKeuanganById = async (req, res) => {
 }
 
 export const updateKeuangan = async (req, res) => {
-    const dataKeuangan = req.body
     try {
         const updateKeuangan = await Keuangan.update({
             tanggal: req.body.tanggal,
             kegiatan: req.body.kegiatan,
             jenis: req.body.jenis,
             catatan: req.body.catatan,
-            jumlah: req.body.catatan,
+            jumlah: req.body.jumlah,
         },{
             where:{
                 id_keuangan: req.params.id_keuangan
             }
         });
+        if (updateKeuangan == 0) return error
+        const dataKeuangan = await Keuangan.findOne({
+            where: {
+                id_keuangan: req.params.id_keuangan,
+            }
+        })
         res.status(200).json({
             status: res.statusCode,
             message: 'Berhasil memperbarui Keuangan',

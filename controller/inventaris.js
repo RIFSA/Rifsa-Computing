@@ -16,7 +16,7 @@ export const postInventaris = async (req, res) => {
     const fileSize = file.data.length
     const ext = path.extname(file.name)
     const fileName = file.md5 + ext
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`
+    const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({

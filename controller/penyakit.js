@@ -1,5 +1,7 @@
 //POG
 import Penyakit from "../models/penyakit.js";
+import path from "path"
+import fs from "fs"
 
 export const postPenyakit = async (req, res) => {
     const {
@@ -18,7 +20,7 @@ export const postPenyakit = async (req, res) => {
     const fileSize = file.data.length
     const ext = path.extname(file.name)
     const fileName = file.md5 + ext
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`
+    const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({
@@ -110,7 +112,7 @@ export const updatePenyakit = async (req, res) => {
 
     let fileName = "";
     if (req.files === null) {
-        fileName = penyakit.image
+        fileName = searchpenyakit.image
     } else {
         const file = req.files.file
         const fileSize = file.data.length
@@ -127,7 +129,7 @@ export const updatePenyakit = async (req, res) => {
             message: 'Image must be less than 5 MB',
         })
 
-        const filePath = `./public/images/${searchinventaris.image}`
+        const filePath = `./public/images/${searchpenyakit.image}`
         fs.unlinkSync(filePath)
 
         file.mv(`./public/images/${fileName}`, (err) => {
@@ -192,7 +194,7 @@ export const deletePenyakit = async (req, res) => {
         })
 
         try {
-            const filePath = `./public/images/${Penyakit.image}`
+            const filePath = `./public/images/${penyakit.image}`
             fs.unlinkSync(filePath)
             await Penyakit.destroy({
                 where: {

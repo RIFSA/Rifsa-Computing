@@ -12,7 +12,10 @@ const Penyakit = db.define('penyakit',{
     indikasi: {
         type: String,
     },
-    link_foto: {
+    image: {
+        type: String,
+    },
+    url: {
         type: String,
     },
     tanggal: {

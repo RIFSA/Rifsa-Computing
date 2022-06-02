@@ -7,7 +7,6 @@ const Keuangan = db.define('keuangan',{
     },
     tanggal: {
         type: Date,
-        default: Date.now(),
     },
     kegiatan: {
         type: String,
@@ -19,7 +18,7 @@ const Keuangan = db.define('keuangan',{
         type: String,
     },
     jumlah: {
-        type: String,
+        type: Int16Array,
     },
     createdAt: {
         type: String,

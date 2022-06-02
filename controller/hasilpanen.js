@@ -83,6 +83,7 @@ export const updateHasilPanen = async (req, res) => {
                 id_hasil: req.params.id_hasil
             }
         });
+        if (updateHasilPanen == 0) return error
         res.status(200).json({
             status: res.statusCode,
             message: 'Berhasil memperbarui hasil panen',
