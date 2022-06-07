@@ -42,12 +42,14 @@ export const postInventaris = async (req, res) => {
                 catatan: catatan,
             })
             res.status(201).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Berhasil membuat inventaris',
                 data: inventaris
             })
         } catch (error) {
             res.status(400).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Gagal membuat Inventaris baru'
             })
@@ -59,12 +61,14 @@ export const getInventaris = async (req, res) => {
     try {
         const inventaris = await Inventaris.findAll()
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Inventaris',
             data: inventaris
         })
     } catch (err) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal mendapatkan Inventaris'
         })
@@ -75,17 +79,20 @@ export const getInventarisById = async (req, res) => {
     try {
         const inventaris = await Inventaris.findOne({
             where: {
+                id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
         if (inventaris === null) return error
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Inventaris',
             data: inventaris
         })
     } catch (error) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal mendapatkan Inventaris'
         })
@@ -95,10 +102,12 @@ export const getInventarisById = async (req, res) => {
 export const updateInventaris = async (req, res) => {
     const searchinventaris = await Inventaris.findOne({
         where: {
-            id_inventaris: req.params.id_inventaris
+            id: idUser,
+            id_inventaris: req.params.id_inventaris,
         }
     });
     if (!searchinventaris) return res.status(404).json({
+        id_inventaris: req.params.id_inventaris,
         status: res.statusCode,
         message: 'Inventaris tidak ditemukan'
     })
@@ -148,21 +157,25 @@ export const updateInventaris = async (req, res) => {
             catatan: catatan,
         }, {
             where: {
+                id: idUser,
                 id_inventaris: req.params.id_inventaris
             }
         })
         const updatedinventaris = await Inventaris.findOne({
             where: {
+                id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil memperbarui inventaris',
             data: updatedinventaris
         })
     } catch (error) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal memperbarui Inventaris'
         })
@@ -172,10 +185,12 @@ export const updateInventaris = async (req, res) => {
 export const deleteInventaris = async (req, res) => {
         const inventaris = await Inventaris.findOne({
             where: {
-                id_inventaris: req.params.id_inventaris
+                id: idUser,
+                id_inventaris: req.params.id_inventaris,
             }
         });
         if (!inventaris) return res.status(404).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Inventaris tidak ditemukan'
         })
@@ -185,15 +200,18 @@ export const deleteInventaris = async (req, res) => {
             fs.unlinkSync(filePath)
             await Inventaris.destroy({
                 where: {
-                    id_inventaris: req.params.id_inventaris
+                    id: idUser,
+                    id_inventaris: req.params.id_inventaris,
                 }
             });
             res.status(200).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Berhasil menghapus inventaris'
             })
         } catch (err) {
             res.status(404).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Gagal menghapus inventaris'
             })
