@@ -106,6 +106,20 @@ export const updateHasilPanen = async (req, res) => {
         })
     }
 }
+export const getUsers = async (req, res) => {
+    try {
+        const users = await Users.findAll({
+            attributes: ['id', 'name', 'email']
+        });
+        return res.status(200).json({
+            status: res.statusCode,
+            message: "Sukses",
+            data: users
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export const deleteHasilPanen = async (req, res) => {
     try {

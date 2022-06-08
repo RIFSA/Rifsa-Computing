@@ -182,6 +182,21 @@ export const updateInventaris = async (req, res) => {
     }
 }
 
+export const getUsers = async (req, res) => {
+    try {
+        const users = await Users.findAll({
+            attributes: ['id', 'name', 'email']
+        });
+        return res.status(200).json({
+            status: res.statusCode,
+            message: "Sukses",
+            data: users
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const deleteInventaris = async (req, res) => {
         const inventaris = await Inventaris.findOne({
             where: {
