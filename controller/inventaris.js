@@ -149,7 +149,7 @@ export const updateInventaris = async (req, res) => {
         jumlah,
         catatan
     } = req.body;
-    const url = `${req.protocol}://${req.get("host")}/images/${fileName}`
+    const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     try {
         await Inventaris.update({
             nama: nama,
