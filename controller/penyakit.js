@@ -64,21 +64,6 @@ export const postPenyakit = async (req, res) => {
     })
 };
 
-export const getUsers = async (req, res) => {
-    try {
-        const users = await Users.findAll({
-            attributes: ['id', 'name', 'email']
-        });
-        return res.status(200).json({
-            status: res.statusCode,
-            message: "Sukses",
-            data: users
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 export const getPenyakit = async (req, res) => {
     try {
         const penyakit = await Penyakit.findAll()
@@ -101,7 +86,7 @@ export const getPenyakitById = async (req, res) => {
     try {
         const penyakit = await Penyakit.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         })
@@ -124,7 +109,7 @@ export const getPenyakitById = async (req, res) => {
 export const updatePenyakit = async (req, res) => {
     const searchpenyakit = await Penyakit.findOne({
         where: {
-            id: idUser,
+            // id: idUser,
             id_penyakit: req.params.id_penyakit,
         }
     });
@@ -185,13 +170,13 @@ export const updatePenyakit = async (req, res) => {
             deskripsi: deskripsi,
         }, {
             where: {
-                id: idUser,
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         })
         const updatedpenyakit = await Penyakit.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         })
@@ -213,7 +198,7 @@ export const updatePenyakit = async (req, res) => {
 export const deletePenyakit = async (req, res) => {
         const penyakit = await Penyakit.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         });

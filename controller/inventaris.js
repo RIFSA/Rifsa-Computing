@@ -15,7 +15,7 @@ export const postInventaris = async (req, res) => {
     const file = req.files.file
     const fileSize = file.data.length
     const ext = path.extname(file.name)
-    const fileName = file.md5 + ext
+    const fileName = file.md5 + Math.random() + ext
     const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
 
@@ -28,7 +28,7 @@ export const postInventaris = async (req, res) => {
         message: 'Image must be less than 5 MB',
     })
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`public/images/${fileName}`, async (err) => {
         if (err) return res.status(500).json({
             status: res.statusCode,
             message: 'invalid images',
@@ -77,9 +77,10 @@ export const getInventaris = async (req, res) => {
 
 export const getInventarisById = async (req, res) => {
     try {
+        // const idUser = req.params.id_User
         const inventaris = await Inventaris.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
@@ -100,9 +101,10 @@ export const getInventarisById = async (req, res) => {
 }
 
 export const updateInventaris = async (req, res) => {
+    // const idUser = req.params.id_User
     const searchinventaris = await Inventaris.findOne({
         where: {
-            id: idUser,
+            // id: idUser,
             id_inventaris: req.params.id_inventaris,
         }
     });
@@ -119,7 +121,7 @@ export const updateInventaris = async (req, res) => {
         const file = req.files.file
         const fileSize = file.data.length
         const ext = path.extname(file.name)
-        fileName = file.md5 + ext
+        fileName = file.md5 + Math.random() + ext
         const allowedType = ['.png', '.jpg', '.jpeg']
 
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({
@@ -157,13 +159,13 @@ export const updateInventaris = async (req, res) => {
             catatan: catatan,
         }, {
             where: {
-                id: idUser,
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris
             }
         })
         const updatedinventaris = await Inventaris.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
@@ -182,25 +184,11 @@ export const updateInventaris = async (req, res) => {
     }
 }
 
-export const getUsers = async (req, res) => {
-    try {
-        const users = await Users.findAll({
-            attributes: ['id', 'name', 'email']
-        });
-        return res.status(200).json({
-            status: res.statusCode,
-            message: "Sukses",
-            data: users
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 export const deleteInventaris = async (req, res) => {
+        // const idUser = req.params.id_User
         const inventaris = await Inventaris.findOne({
             where: {
-                id: idUser,
+                // id_user: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         });
@@ -211,11 +199,10 @@ export const deleteInventaris = async (req, res) => {
         })
 
         try {
-            const filePath = `./public/images/${inventaris.image}`
+            const filePath = `public/images/${inventaris.image}`
             fs.unlinkSync(filePath)
-            await Inventaris.destroy({
+            await inventaris.destroy({
                 where: {
-                    id: idUser,
                     id_inventaris: req.params.id_inventaris,
                 }
             });

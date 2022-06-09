@@ -54,9 +54,10 @@ export const getHasilPanen = async (req, res) => {
 
 export const getHasilPanenById = async (req, res) => {
     try {
+        // const idUser = req.params.id_User
         const hasilpanen = await HasilPanen.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_hasil: req.params.id_hasil,
             }
         })
@@ -78,6 +79,7 @@ export const getHasilPanenById = async (req, res) => {
 
 export const updateHasilPanen = async (req, res) => {
     const dataHasilPanen = req.body;
+    // const idUser = req.params.id_User
     try {
         const updateHasilPanen = await HasilPanen.update({
             tanggal: req.body.tanggal,
@@ -85,9 +87,9 @@ export const updateHasilPanen = async (req, res) => {
             berat: req.body.berat,
             jual: req.body.jual,
             catatan: req.body.catatan,
-        },{
-            where:{
-                id: idUser,
+        }, {
+            where: {
+                // id: idUser,
                 id_hasil: req.params.id_hasil,
             }
         });
@@ -106,26 +108,13 @@ export const updateHasilPanen = async (req, res) => {
         })
     }
 }
-export const getUsers = async (req, res) => {
-    try {
-        const users = await Users.findAll({
-            attributes: ['id', 'name', 'email']
-        });
-        return res.status(200).json({
-            status: res.statusCode,
-            message: "Sukses",
-            data: users
-        });
-    } catch (error) {
-        console.log(error);
-    }
-}
 
 export const deleteHasilPanen = async (req, res) => {
+    // const idUser = req.params.id_User
     try {
         const deleteHasilPanen = await HasilPanen.destroy({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_hasil: req.params.id_hasil,
             }
         });

@@ -14,7 +14,7 @@ const router = express.Router();
 // LOGIN AUTH
 router.post("/register", Register);
 router.post("/login", Login);
-router.get("/token", verifyToken, refreshToken);
+router.get("/token", refreshToken);
 router.delete("/logout", Logout);
 
 // USER
@@ -43,7 +43,7 @@ router.put("/keuangan/:id_keuangan", verifyToken, updateKeuangan);
 router.delete("/keuangan/:id_keuangan", verifyToken, deleteKeuangan);
 
 // PENYAKIT
-router.post("/penyakit", verifyToken, postPenyakit);
+// router.post("/penyakit", verifyToken, postPenyakit);
 router.get("/penyakit", verifyToken, getPenyakit);
 router.get("/penyakit/:id_penyakit", verifyToken, getPenyakitById);
 router.put("/penyakit/:id_penyakit", verifyToken, updatePenyakit);

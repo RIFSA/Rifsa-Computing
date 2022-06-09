@@ -54,10 +54,11 @@ export const getKeuangan = async (req, res) => {
 };
 
 export const getKeuanganById = async (req, res) => {
+    // const idUser = req.params.id_User
     try {
         const keuangan = await Keuangan.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_keuangan: req.params.id_keuangan,
             }
         })
@@ -78,6 +79,7 @@ export const getKeuanganById = async (req, res) => {
 }
 
 export const updateKeuangan = async (req, res) => {
+    // const idUser = req.params.id_User
     try {
         const updateKeuangan = await Keuangan.update({
             tanggal: req.body.tanggal,
@@ -85,16 +87,16 @@ export const updateKeuangan = async (req, res) => {
             jenis: req.body.jenis,
             catatan: req.body.catatan,
             jumlah: req.body.jumlah,
-        },{
-            where:{
-                id: idUser,
+        }, {
+            where: {
+                // id: idUser,
                 id_keuangan: req.params.id_keuangan,
             }
         });
         if (updateKeuangan == 0) return error
         const dataKeuangan = await Keuangan.findOne({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_keuangan: req.params.id_keuangan,
             }
         })
@@ -114,10 +116,11 @@ export const updateKeuangan = async (req, res) => {
 }
 
 export const deleteKeuangan = async (req, res) => {
+    // const idUser = req.params.id_User
     try {
         const deleteKeuangan = await Keuangan.destroy({
             where: {
-                id: idUser,
+                // id: idUser,
                 id_keuangan: req.params.id_keuangan,
             }
         });
