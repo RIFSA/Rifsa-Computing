@@ -15,7 +15,7 @@ export const postInventaris = async (req, res) => {
     const file = req.files.file
     const fileSize = file.data.length
     const ext = path.extname(file.name)
-    const fileName = file.md5 + ext
+    const fileName = file.md5 + Math.random() + ext
     const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
 
@@ -28,7 +28,7 @@ export const postInventaris = async (req, res) => {
         message: 'Image must be less than 5 MB',
     })
 
-    file.mv(`./public/images/${fileName}`, async (err) => {
+    file.mv(`public/images/${fileName}`, async (err) => {
         if (err) return res.status(500).json({
             status: res.statusCode,
             message: 'invalid images',
@@ -42,12 +42,14 @@ export const postInventaris = async (req, res) => {
                 catatan: catatan,
             })
             res.status(201).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Berhasil membuat inventaris',
                 data: inventaris
             })
         } catch (error) {
             res.status(400).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Gagal membuat Inventaris baru'
             })
@@ -59,12 +61,14 @@ export const getInventaris = async (req, res) => {
     try {
         const inventaris = await Inventaris.findAll()
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Inventaris',
             data: inventaris
         })
     } catch (err) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal mendapatkan Inventaris'
         })
@@ -73,19 +77,23 @@ export const getInventaris = async (req, res) => {
 
 export const getInventarisById = async (req, res) => {
     try {
+        // const idUser = req.params.id_User
         const inventaris = await Inventaris.findOne({
             where: {
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
         if (inventaris === null) return error
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Inventaris',
             data: inventaris
         })
     } catch (error) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal mendapatkan Inventaris'
         })
@@ -93,12 +101,15 @@ export const getInventarisById = async (req, res) => {
 }
 
 export const updateInventaris = async (req, res) => {
+    // const idUser = req.params.id_User
     const searchinventaris = await Inventaris.findOne({
         where: {
-            id_inventaris: req.params.id_inventaris
+            // id: idUser,
+            id_inventaris: req.params.id_inventaris,
         }
     });
     if (!searchinventaris) return res.status(404).json({
+        id_inventaris: req.params.id_inventaris,
         status: res.statusCode,
         message: 'Inventaris tidak ditemukan'
     })
@@ -110,7 +121,7 @@ export const updateInventaris = async (req, res) => {
         const file = req.files.file
         const fileSize = file.data.length
         const ext = path.extname(file.name)
-        fileName = file.md5 + ext
+        fileName = file.md5 + Math.random() + ext
         const allowedType = ['.png', '.jpg', '.jpeg']
 
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({
@@ -148,21 +159,25 @@ export const updateInventaris = async (req, res) => {
             catatan: catatan,
         }, {
             where: {
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris
             }
         })
         const updatedinventaris = await Inventaris.findOne({
             where: {
+                // id: idUser,
                 id_inventaris: req.params.id_inventaris,
             }
         })
         res.status(200).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil memperbarui inventaris',
             data: updatedinventaris
         })
     } catch (error) {
         res.status(400).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Gagal memperbarui Inventaris'
         })
@@ -170,30 +185,35 @@ export const updateInventaris = async (req, res) => {
 }
 
 export const deleteInventaris = async (req, res) => {
+        // const idUser = req.params.id_User
         const inventaris = await Inventaris.findOne({
             where: {
-                id_inventaris: req.params.id_inventaris
+                // id_user: idUser,
+                id_inventaris: req.params.id_inventaris,
             }
         });
         if (!inventaris) return res.status(404).json({
+            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Inventaris tidak ditemukan'
         })
 
         try {
-            const filePath = `./public/images/${inventaris.image}`
+            const filePath = `public/images/${inventaris.image}`
             fs.unlinkSync(filePath)
-            await Inventaris.destroy({
+            await inventaris.destroy({
                 where: {
-                    id_inventaris: req.params.id_inventaris
+                    id_inventaris: req.params.id_inventaris,
                 }
             });
             res.status(200).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Berhasil menghapus inventaris'
             })
         } catch (err) {
             res.status(404).json({
+                id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
                 message: 'Gagal menghapus inventaris'
             })

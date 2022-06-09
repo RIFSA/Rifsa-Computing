@@ -49,12 +49,14 @@ export const postPenyakit = async (req, res) => {
                 deskripsi: deskripsi,
             })
             res.status(201).json({
+                id_penyakit: req.params.id_penyakit,
                 status: res.statusCode,
                 message: 'Berhasil membuat Penyakit',
                 data: penyakit
             })
         } catch (error) {
             res.status(400).json({
+                id_penyakit: req.params.id_penyakit,
                 status: res.statusCode,
                 message: 'Gagal membuat Penyakit baru'
             })
@@ -66,12 +68,14 @@ export const getPenyakit = async (req, res) => {
     try {
         const penyakit = await Penyakit.findAll()
         res.status(200).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Penyakit',
             data: penyakit
         })
     } catch (err) {
         res.status(400).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Gagal mendapatkan Penyakit'
         })
@@ -82,17 +86,20 @@ export const getPenyakitById = async (req, res) => {
     try {
         const penyakit = await Penyakit.findOne({
             where: {
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         })
         if (penyakit === null) return error
         res.status(200).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Penyakit',
             data: penyakit
         })
     } catch (error) {
         res.status(400).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Gagal mendapatkan Penyakit'
         })
@@ -102,10 +109,12 @@ export const getPenyakitById = async (req, res) => {
 export const updatePenyakit = async (req, res) => {
     const searchpenyakit = await Penyakit.findOne({
         where: {
-            id_penyakit: req.params.id_penyakit
+            // id: idUser,
+            id_penyakit: req.params.id_penyakit,
         }
     });
     if (!searchpenyakit) return res.status(404).json({
+        id_penyakit: req.params.id_penyakit,
         status: res.statusCode,
         message: 'Penyakit tidak ditemukan'
     })
@@ -161,21 +170,25 @@ export const updatePenyakit = async (req, res) => {
             deskripsi: deskripsi,
         }, {
             where: {
-                id_penyakit: req.params.id_penyakit
+                // id: idUser,
+                id_penyakit: req.params.id_penyakit,
             }
         })
         const updatedpenyakit = await Penyakit.findOne({
             where: {
+                // id: idUser,
                 id_penyakit: req.params.id_penyakit,
             }
         })
         res.status(200).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Berhasil memperbarui Penyakit',
             data: updatedpenyakit
         })
     } catch (error) {
         res.status(400).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Gagal memperbarui Penyakit'
         })
@@ -185,10 +198,12 @@ export const updatePenyakit = async (req, res) => {
 export const deletePenyakit = async (req, res) => {
         const penyakit = await Penyakit.findOne({
             where: {
-                id_penyakit: req.params.id_penyakit
+                // id: idUser,
+                id_penyakit: req.params.id_penyakit,
             }
         });
         if (!penyakit) return res.status(404).json({
+            id_penyakit: req.params.id_penyakit,
             status: res.statusCode,
             message: 'Penyakit tidak ditemukan'
         })
@@ -198,15 +213,19 @@ export const deletePenyakit = async (req, res) => {
             fs.unlinkSync(filePath)
             await Penyakit.destroy({
                 where: {
-                    id_penyakit: req.params.id_penyakit
+                    id: idUser,
+                    token: accessToken,
+                    id_penyakit: req.params.id_penyakit,
                 }
             });
             res.status(200).json({
+                id_penyakit: req.params.id_penyakit,
                 status: res.statusCode,
                 message: 'Berhasil menghapus Penyakit'
             })
         } catch (err) {
             res.status(404).json({
+                id_penyakit: req.params.id_penyakit,
                 status: res.statusCode,
                 message: 'Gagal menghapus Penyakit'
             })
