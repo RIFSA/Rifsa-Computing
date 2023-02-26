@@ -19,14 +19,24 @@ const Users = db.define('users',{
     refresh_token: {
         type: String,
     },
-    createdAt: {
-        type: String,
-        default: Date.now()
-    },
-    updatedAt: {
+    created_at: {
         type: Date,
         default: Date.now(),
-    }
+    },
+    created_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now(),
+    },
+    updated_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+},{
+    timestamps: false
 })
 
 export default Users;

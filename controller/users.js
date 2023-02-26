@@ -6,6 +6,26 @@ import {
     loginValidation
 } from "../config/validation.js"
 
+export const verifyTokenExternal = async (req, res, next) => {
+    const {
+        token
+    } = req.body
+    if(token == null) return res.status(403).json({
+        status: res.statusCode,
+        message: "Unauthorized"
+    });
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
+        if(err) return res.status(403).json({
+            status: res.statusCode,
+            message: "Unauthorized"
+        });
+    })
+    return res.status(200).json({
+        status: res.statusCode,
+        message: "Authorized"
+    });
+}
+
 export const getToken = async (req, res, next) => {
     const {
         token

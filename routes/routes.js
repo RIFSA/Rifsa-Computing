@@ -1,5 +1,5 @@
 import express from "express";
-import { getToken, getUsers, Register, Login, Logout, Delete } from "../controller/users.js";
+import { getToken, getUsers, Register, Login, Logout, Delete, verifyTokenExternal } from "../controller/users.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 import { postHasilPanen, getHasilPanen, getHasilPanenById, updateHasilPanen, deleteHasilPanen } from "../controller/hasilpanen.js";
 import { postInventaris, getInventaris, getInventarisById, updateInventaris, deleteInventaris } from "../controller/inventaris.js";
@@ -20,6 +20,7 @@ router.delete("/logout", Logout);
 // USER
 router.get("/users", verifyToken, getUsers);
 router.delete("/delete", verifyToken, Delete);
+router.post("/verifytoken", verifyTokenExternal);
 
 // HASIL PANEN
 router.post("/hasilpanen", verifyToken, postHasilPanen);

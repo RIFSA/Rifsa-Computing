@@ -4,6 +4,8 @@ import fs from "fs"
 
 export const postInventaris = async (req, res) => {
     const {
+        userId,
+        username,
         nama,
         jumlah,
         catatan
@@ -40,6 +42,8 @@ export const postInventaris = async (req, res) => {
                 url: url,
                 jumlah: jumlah,
                 catatan: catatan,
+                user_id: userId,
+                created_by: username,
             })
             res.status(201).json({
                 id_inventaris: req.params.id_inventaris,
@@ -51,7 +55,8 @@ export const postInventaris = async (req, res) => {
             res.status(400).json({
                 id_inventaris: req.params.id_inventaris,
                 status: res.statusCode,
-                message: 'Gagal membuat Inventaris baru'
+                message: 'Gagal membuat Inventaris baru',
+                error: error
             })
         }
     })
@@ -59,28 +64,32 @@ export const postInventaris = async (req, res) => {
 
 export const getInventaris = async (req, res) => {
     try {
-        const inventaris = await Inventaris.findAll()
+        const userId = req.body.user_id
+        const inventaris = await Inventaris.findAll({
+            where: {
+                user_id: userId,
+            }
+        })
         res.status(200).json({
-            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Inventaris',
             data: inventaris
         })
     } catch (err) {
         res.status(400).json({
-            id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
-            message: 'Gagal mendapatkan Inventaris'
+            message: 'Gagal mendapatkan Inventaris',
+            error: error
         })
     };
 };
 
 export const getInventarisById = async (req, res) => {
     try {
-        // const idUser = req.params.id_User
+        const userId = req.body.user_id
         const inventaris = await Inventaris.findOne({
             where: {
-                // id: idUser,
+                user_id: userId,
                 id_inventaris: req.params.id_inventaris,
             }
         })
@@ -95,16 +104,18 @@ export const getInventarisById = async (req, res) => {
         res.status(400).json({
             id_inventaris: req.params.id_inventaris,
             status: res.statusCode,
-            message: 'Gagal mendapatkan Inventaris'
+            message: 'Gagal mendapatkan Inventaris',
+            error: error
         })
     };
 }
 
 export const updateInventaris = async (req, res) => {
-    // const idUser = req.params.id_User
+    const userId = req.body.user_id
+    const username = req.body.username
     const searchinventaris = await Inventaris.findOne({
         where: {
-            // id: idUser,
+            user_id: userId,
             id_inventaris: req.params.id_inventaris,
         }
     });
@@ -157,15 +168,17 @@ export const updateInventaris = async (req, res) => {
             url: url,
             jumlah: jumlah,
             catatan: catatan,
+            updated_by: username,
+            updated_at: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
         }, {
             where: {
-                // id: idUser,
+                user_id: userId,
                 id_inventaris: req.params.id_inventaris
             }
         })
         const updatedinventaris = await Inventaris.findOne({
             where: {
-                // id: idUser,
+                user_id: userId,
                 id_inventaris: req.params.id_inventaris,
             }
         })
