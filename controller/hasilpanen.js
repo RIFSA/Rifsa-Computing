@@ -2,6 +2,8 @@ import HasilPanen from "../models/hasilpanen.js";
 
 export const postHasilPanen = async (req, res) => {
     const {
+        userId,
+        username,
         tanggal,
         jenis,
         berat,
@@ -10,42 +12,47 @@ export const postHasilPanen = async (req, res) => {
     } = req.body;
 
     const HasilPanenPost = new HasilPanen({
+        user_id: userId,
         tanggal: tanggal,
         jenis: jenis,
         berat: berat,
         jual: jual,
         catatan: catatan,
+        created_by: username,
     });
 
     try {
         const hasilpanen = await HasilPanenPost.save();
         res.status(200).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: hasilpanen.id_hasil,
             status: res.statusCode,
             message: 'Berhasil membuat hasil panen baru',
             data: hasilpanen
         })
     } catch (error) {
         res.status(400).json({
-            id_hasil: req.params.id_hasil,
             status: res.statusCode,
-            message: 'Gagal membuat hasil panen baru'
+            message: 'Gagal membuat hasil panen baru',
+            error: error
         })
     };
 };
 
 export const getHasilPanen = async (req, res) => {
     try {
-        const hasilpanen = await HasilPanen.findAll()
+        const userId = req.body.user_id
+        const hasilpanen = await HasilPanen.findAll({
+            where: {
+                user_id: userId,
+            }
+        })
         res.status(200).json({
-            id_hasil: req.params.id_hasil,
             status: res.statusCode,
             message: 'Berhasil mendapatkan hasil panen',
             data: hasilpanen
         })
     } catch (err) {
         res.status(400).json({
-            id_hasil: req.params.id_hasil,
             status: res.statusCode,
             message: 'Gagal mendapatkan hasil panen'
         })
@@ -54,10 +61,10 @@ export const getHasilPanen = async (req, res) => {
 
 export const getHasilPanenById = async (req, res) => {
     try {
-        // const idUser = req.params.id_User
+        const userId = req.body.user_id
         const hasilpanen = await HasilPanen.findOne({
             where: {
-                // id: idUser,
+                user_id: userId,
                 id_hasil: req.params.id_hasil,
             }
         })
@@ -79,7 +86,8 @@ export const getHasilPanenById = async (req, res) => {
 
 export const updateHasilPanen = async (req, res) => {
     const dataHasilPanen = req.body;
-    // const idUser = req.params.id_User
+    const userId = req.body.user_id
+    const username = req.body.username
     try {
         const updateHasilPanen = await HasilPanen.update({
             tanggal: req.body.tanggal,
@@ -87,9 +95,11 @@ export const updateHasilPanen = async (req, res) => {
             berat: req.body.berat,
             jual: req.body.jual,
             catatan: req.body.catatan,
+            updated_by: username,
+            updated_at: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
         }, {
             where: {
-                // id: idUser,
+                user_id: userId,
                 id_hasil: req.params.id_hasil,
             }
         });
@@ -104,7 +114,8 @@ export const updateHasilPanen = async (req, res) => {
         res.status(400).json({
             id_hasil: req.params.id_hasil,
             status: res.statusCode,
-            message: 'Gagal memperbarui hasil panen'
+            message: 'Gagal memperbarui hasil panen',
+            error: err
         })
     }
 }

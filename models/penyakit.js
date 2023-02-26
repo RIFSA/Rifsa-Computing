@@ -5,6 +5,7 @@ const Penyakit = db.define('penyakit',{
     id_penyakit: {
         type: Int16Array,
         primaryKey: true,
+        autoIncrement: true,
     },
     nama: {
         type: String,
@@ -31,14 +32,27 @@ const Penyakit = db.define('penyakit',{
     deskripsi: {
         type: String,
     },
-    createdAt: {
-        type: String,
-        default: Date.now(),
+    id_user: {
+        type: Int16Array,
     },
-    updatedAt: {
+    created_at: {
         type: Date,
         default: Date.now(),
-    }
+    },
+    created_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now(),
+    },
+    updated_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+},{
+    timestamps: false
 });
 
 export default Penyakit

@@ -4,6 +4,7 @@ const HasilPanen = db.define('hasilpanen',{
     id_hasil: {
         type: Int16Array,
         primaryKey: true,
+        autoIncrement: true,
     },
     tanggal: {
         type: Date,
@@ -21,14 +22,27 @@ const HasilPanen = db.define('hasilpanen',{
     catatan: {
         type: String,
     },
-    createdAt: {
-        type: String,
-        default: Date.now(),
+    user_id: {
+        type: Int16Array,
     },
-    updatedAt: {
+    created_at: {
         type: Date,
-        default: Date.now(),
-    }
+        default: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
+    },
+    created_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+    updated_at: {
+        type: Date,
+        default: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
+    },
+    updated_by: {
+        type: String,
+        default: "SYSTEM"
+    },
+},{
+    timestamps: false
 });
 
 export default HasilPanen
