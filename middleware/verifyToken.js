@@ -13,6 +13,7 @@ export const verifyToken = (req, res, next) => {
             message: "token invalid"
         });
         req.email = decode.email;
+        req.user_id = decode.user_id;
         next();
     })
 }
