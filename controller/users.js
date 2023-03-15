@@ -69,7 +69,7 @@ export const Register = async (req, res) => {
     if (error) {
         return res.status(400).json({
             status: res.statusCode,
-            message: error.error.details[0].message
+            message: error.details[0].message
         });
     }
 
@@ -115,11 +115,11 @@ export const Register = async (req, res) => {
 }
 
 export const Login = async (req, res) => {
-    const error = await loginValidation(req.body)
+    const {error} = await loginValidation(req.body)
     if (error) {
         return res.status(400).json({
             status: res.statusCode,
-            message: error.error.details[0].message
+            message: error.details[0].message
         });
     }
     const user = await Users.findAll({
