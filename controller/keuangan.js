@@ -25,14 +25,13 @@ export const postKeuangan = async (req, res) => {
     try {
         const keuangan = await KeuanganPost.save();
         res.status(200).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: keuangan.id_keuangan,
             status: res.statusCode,
             message: 'Berhasil membuat Keuangan baru',
             data: keuangan
         })
     } catch (error) {
         res.status(400).json({
-            id_keuangan: req.params.id_keuangan,
             status: res.statusCode,
             message: 'Gagal membuat Keuangan baru',
             error: error
@@ -42,21 +41,19 @@ export const postKeuangan = async (req, res) => {
 
 export const getKeuangan = async (req, res) => {
     try {
-        const userId = req.body.user_id
+        const userId = req.query.user_id
         const keuangan = await Keuangan.findAll({
             where: {
                 user_id: userId,
             }
         })
         res.status(200).json({
-            id_keuangan: req.params.id_keuangan,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Keuangan',
             data: keuangan
         })
     } catch (error) {
         res.status(400).json({
-            id_keuangan: req.params.id_keuangan,
             status: res.statusCode,
             message: 'Gagal mendapatkan Keuangan'
         })
@@ -64,24 +61,24 @@ export const getKeuangan = async (req, res) => {
 };
 
 export const getKeuanganById = async (req, res) => {
-    const userId = req.body.user_id
+    const userId = req.query.user_id
     try {
         const keuangan = await Keuangan.findOne({
             where: {
                 user_id: userId,
-                id_keuangan: req.params.id_keuangan,
+                id_keuangan: req.query.id_keuangan,
             }
         })
         if (keuangan === null) return error
         res.status(200).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Berhasil mendapatkan Keuangan',
             data: keuangan
         })
     } catch (error) {
         res.status(400).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Gagal mendapatkan Keuangan',
             error: error
@@ -104,25 +101,25 @@ export const updateKeuangan = async (req, res) => {
         }, {
             where: {
                 user_id: userId,
-                id_keuangan: req.params.id_keuangan,
+                id_keuangan: req.query.id_keuangan,
             }
         });
         if (updateKeuangan == 0) return error
         const dataKeuangan = await Keuangan.findOne({
             where: {
                 user_id: userId,
-                id_keuangan: req.params.id_keuangan,
+                id_keuangan: req.query.id_keuangan,
             }
         })
         res.status(200).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Berhasil memperbarui Keuangan',
             data: dataKeuangan
         })
     } catch (error) {
         res.status(400).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Gagal memperbarui Keuangan'
         })
@@ -130,22 +127,22 @@ export const updateKeuangan = async (req, res) => {
 }
 
 export const deleteKeuangan = async (req, res) => {
-    // const idUser = req.params.id_User
+    // const idUser = req.query.id_User
     try {
         const deleteKeuangan = await Keuangan.destroy({
             where: {
                 // id: idUser,
-                id_keuangan: req.params.id_keuangan,
+                id_keuangan: req.query.id_keuangan,
             }
         });
         res.status(200).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Berhasil menghapus Keuangan'
         })
     } catch (error) {
         res.status(400).json({
-            id_keuangan: req.params.id_keuangan,
+            id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
             message: 'Gagal menghapus Keuangan'
         })

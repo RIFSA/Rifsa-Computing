@@ -25,23 +25,23 @@ router.post("/verifytoken", verifyTokenExternal);
 // HASIL PANEN
 router.post("/hasilpanen", verifyToken, postHasilPanen);
 router.get("/hasilpanen", verifyToken, getHasilPanen);
-router.get("/hasilpanen/:id_hasil", verifyToken, getHasilPanenById);
-router.put("/hasilpanen/:id_hasil", verifyToken, updateHasilPanen);
-router.delete("/hasilpanen/:id_hasil", verifyToken, deleteHasilPanen);
+router.get("/hasilpanendetail", verifyToken, getHasilPanenById);
+router.put("/hasilpanen", verifyToken, updateHasilPanen);
+router.delete("/hasilpanen", verifyToken, deleteHasilPanen);
 
 // INVENTARIS
 router.post("/inventaris", verifyToken, postInventaris);
 router.get("/inventaris", verifyToken, getInventaris);
-router.get("/inventaris/:id_inventaris", verifyToken, getInventarisById);
-router.put("/inventaris/:id_inventaris", verifyToken, updateInventaris);
-router.delete("/inventaris/:id_inventaris", verifyToken, deleteInventaris);
+router.get("/inventarisdetail", verifyToken, getInventarisById);
+router.put("/inventaris", verifyToken, updateInventaris);
+router.delete("/inventaris", verifyToken, deleteInventaris);
 
 // KEUANGAN
 router.post("/keuangan", verifyToken, postKeuangan);
 router.get("/keuangan", verifyToken, getKeuangan);
-router.get("/keuangan/:id_keuangan", verifyToken, getKeuanganById);
-router.put("/keuangan/:id_keuangan", verifyToken, updateKeuangan);
-router.delete("/keuangan/:id_keuangan", verifyToken, deleteKeuangan);
+router.get("/keuangandetail", verifyToken, getKeuanganById);
+router.put("/keuangan", verifyToken, updateKeuangan);
+router.delete("/keuangan", verifyToken, deleteKeuangan);
 
 // PENYAKIT
 // router.post("/penyakit", verifyToken, postPenyakit);

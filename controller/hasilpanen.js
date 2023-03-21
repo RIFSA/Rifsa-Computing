@@ -40,7 +40,7 @@ export const postHasilPanen = async (req, res) => {
 
 export const getHasilPanen = async (req, res) => {
     try {
-        const userId = req.body.user_id
+        const userId = req.query.user_id
         const hasilpanen = await HasilPanen.findAll({
             where: {
                 user_id: userId,
@@ -61,23 +61,23 @@ export const getHasilPanen = async (req, res) => {
 
 export const getHasilPanenById = async (req, res) => {
     try {
-        const userId = req.body.user_id
+        const userId = req.query.user_id
         const hasilpanen = await HasilPanen.findOne({
             where: {
                 user_id: userId,
-                id_hasil: req.params.id_hasil,
+                id_hasil: req.query.id_hasil,
             }
         })
         if (hasilpanen === null) return error
         res.status(200).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Berhasil mendapatkan hasil panen',
             data: hasilpanen
         })
     } catch (error) {
         res.status(400).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Gagal mendapatkan hasil panen'
         })
@@ -100,19 +100,19 @@ export const updateHasilPanen = async (req, res) => {
         }, {
             where: {
                 user_id: userId,
-                id_hasil: req.params.id_hasil,
+                id_hasil: req.query.id_hasil,
             }
         });
         if (updateHasilPanen == 0) return error
         res.status(200).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Berhasil memperbarui hasil panen',
             data: dataHasilPanen
         })
     } catch (err) {
         res.status(400).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Gagal memperbarui hasil panen',
             error: err
@@ -121,22 +121,22 @@ export const updateHasilPanen = async (req, res) => {
 }
 
 export const deleteHasilPanen = async (req, res) => {
-    // const idUser = req.params.id_User
+    // const idUser = req.query.id_User
     try {
         const deleteHasilPanen = await HasilPanen.destroy({
             where: {
                 // id: idUser,
-                id_hasil: req.params.id_hasil,
+                id_hasil: req.query.id_hasil,
             }
         });
         res.status(200).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Berhasil menghapus hasil panen'
         })
     } catch (err) {
         res.status(400).json({
-            id_hasil: req.params.id_hasil,
+            id_hasil: req.query.id_hasil,
             status: res.statusCode,
             message: 'Gagal menghapus hasil panen'
         })
