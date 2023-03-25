@@ -64,6 +64,12 @@ export const postInventaris = async (req, res) => {
 export const getInventaris = async (req, res) => {
     try {
         const userId = req.query.user_id
+        const user = await Inventaris.findOne({
+            where: {
+                user_id: userId,
+            }
+        })
+        if (user === null) return err
         const inventaris = await Inventaris.findAll({
             where: {
                 user_id: userId,

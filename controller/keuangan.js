@@ -42,6 +42,12 @@ export const postKeuangan = async (req, res) => {
 export const getKeuangan = async (req, res) => {
     try {
         const userId = req.query.user_id
+        const user = await Keuangan.findOne({
+            where: {
+                user_id: userId,
+            }
+        })
+        if (user === null) return err
         const keuangan = await Keuangan.findAll({
             where: {
                 user_id: userId,

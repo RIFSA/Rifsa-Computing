@@ -41,6 +41,12 @@ export const postHasilPanen = async (req, res) => {
 export const getHasilPanen = async (req, res) => {
     try {
         const userId = req.query.user_id
+        const user = await HasilPanen.findOne({
+            where: {
+                user_id: userId,
+            }
+        })
+        if (user === null) return err
         const hasilpanen = await HasilPanen.findAll({
             where: {
                 user_id: userId,
