@@ -1,6 +1,6 @@
 import Users from "../models/user.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { decode } from "jsonwebtoken";
 import {
     registerValidation,
     loginValidation
@@ -15,15 +15,19 @@ export const verifyTokenExternal = async (req, res, next) => {
         message: "Unauthorized"
     });
     jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err) => {
-        if(err) return res.status(403).json({
-            status: res.statusCode,
-            message: "Unauthorized"
-        });
+        if(err)
+            return res.status(403).json({
+                status: res.statusCode,
+                message: "Unauthorized"
+            });
+        else
+            return res.status(200).json({
+                status: res.statusCode,
+                message: "Authorized",
+                user_id: decode(token).idUser,
+                username: decode(token).name
+            });
     })
-    return res.status(200).json({
-        status: res.statusCode,
-        message: "Authorized"
-    });
 }
 
 export const getToken = async (req, res, next) => {

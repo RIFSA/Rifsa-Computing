@@ -141,6 +141,8 @@ export const deleteKeuangan = async (req, res) => {
                 id_keuangan: req.query.id_keuangan,
             }
         });
+        console.log(deleteKeuangan)
+        if (deleteKeuangan == 0) return error
         res.status(200).json({
             id_keuangan: req.query.id_keuangan,
             status: res.statusCode,

@@ -135,6 +135,7 @@ export const deleteHasilPanen = async (req, res) => {
                 id_hasil: req.query.id_hasil,
             }
         });
+        if (deleteHasilPanen == 0) return error
         res.status(200).json({
             id_hasil: req.query.id_hasil,
             status: res.statusCode,
