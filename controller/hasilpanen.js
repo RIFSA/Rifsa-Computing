@@ -2,22 +2,20 @@ import HasilPanen from "../models/hasilpanen.js";
 
 export const postHasilPanen = async (req, res) => {
     const {
-        userId,
+        user_id,
         username,
-        tanggal,
-        jenis,
-        berat,
-        jual,
-        catatan
+        tanggal_hasil,
+        jenis_tanaman,
+        berat_tanaman,
+        catatan_hasil
     } = req.body;
 
     const HasilPanenPost = new HasilPanen({
-        user_id: userId,
-        tanggal: tanggal,
-        jenis: jenis,
-        berat: berat,
-        jual: jual,
-        catatan: catatan,
+        user_id: user_id,
+        tanggal_hasil: tanggal_hasil,
+        jenis_tanaman: jenis_tanaman,
+        berat_tanaman: berat_tanaman,
+        catatan_hasil: catatan_hasil,
         created_by: username,
     });
 
@@ -96,11 +94,10 @@ export const updateHasilPanen = async (req, res) => {
     const username = req.body.username
     try {
         const updateHasilPanen = await HasilPanen.update({
-            tanggal: req.body.tanggal,
-            jenis: req.body.jenis,
-            berat: req.body.berat,
-            jual: req.body.jual,
-            catatan: req.body.catatan,
+            tanggal_hasil: dataHasilPanen.tanggal_hasil,
+            jenis_tanaman: dataHasilPanen.jenis_tanaman,
+            berat_tanaman: dataHasilPanen.berat_tanaman,
+            catatan_hasil: dataHasilPanen.catatan_hasil,
             updated_by: username,
             updated_at: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
         }, {

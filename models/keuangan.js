@@ -6,19 +6,19 @@ const Keuangan = db.define('keuangan',{
         primaryKey: true,
         autoIncrement: true,
     },
-    tanggal: {
+    tanggal_transaksi: {
         type: Date,
     },
-    kegiatan: {
+    jenis_kegiatan: {
         type: String,
     },
-    jenis: {
+    jenis_tanaman: {
         type: String,
     },
-    catatan: {
+    catatan_keuangan: {
         type: String,
     },
-    jumlah: {
+    nominal_transaksi: {
         type: Int16Array,
     },
     user_id: {

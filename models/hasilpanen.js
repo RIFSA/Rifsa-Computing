@@ -6,20 +6,17 @@ const HasilPanen = db.define('hasilpanen',{
         primaryKey: true,
         autoIncrement: true,
     },
-    tanggal: {
+    tanggal_hasil: {
         type: Date,
         default: Date.now(),
     },
-    jenis: {
+    jenis_tanaman: {
         type: String,
     },
-    berat: {
+    berat_tanaman: {
         type: Int16Array,
     },
-    jual: {
-        type: Int16Array,
-    },
-    catatan: {
+    catatan_hasil: {
         type: String,
     },
     user_id: {

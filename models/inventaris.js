@@ -1,3 +1,4 @@
+import { DOUBLE } from "sequelize";
 import db from "../config/database.js";
 
 const Inventaris = db.define('inventaris',{
@@ -6,19 +7,22 @@ const Inventaris = db.define('inventaris',{
         primaryKey: true,
         autoIncrement: true,
     },
-    nama: {
+    nama_inventaris: {
         type: String,
     },
-    jumlah: {
+    jumlah_inventaris: {
         type: String,
     },
-    image: {
+    image_name: {
         type: String,
     },
-    url: {
+    image_url: {
         type: String,
     },
-    catatan: {
+    image_size: {
+        type: DOUBLE,
+    },
+    catatan_inventaris: {
         type: String,
     },
     user_id: {

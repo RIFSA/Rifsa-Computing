@@ -3,22 +3,22 @@ import Keuangan from "../models/keuangan.js";
 
 export const postKeuangan = async (req, res) => {
     const {
-        userId,
+        user_id,
         username,
-        tanggal,
-        kegiatan,
-        jenis,
-        catatan,
-        jumlah,
+        tanggal_transaksi,
+        jenis_kegiatan,
+        jenis_tanaman,
+        catatan_keuangan,
+        nominal_transaksi,
     } = req.body;
 
     const KeuanganPost = new Keuangan({
-        tanggal: tanggal,
-        kegiatan: kegiatan,
-        jenis: jenis,
-        catatan: catatan,
-        jumlah: jumlah,
-        user_id: userId,
+        tanggal_transaksi: tanggal_transaksi,
+        jenis_kegiatan: jenis_kegiatan,
+        jenis_tanaman: jenis_tanaman,
+        catatan_keuangan: catatan_keuangan,
+        nominal_transaksi: nominal_transaksi,
+        user_id: user_id,
         created_by: username,
     });
 
@@ -93,27 +93,34 @@ export const getKeuanganById = async (req, res) => {
 }
 
 export const updateKeuangan = async (req, res) => {
-    const userId = req.body.user_id
-    const username = req.body.username
+    const {
+        user_id,
+        username,
+        tanggal_transaksi,
+        jenis_kegiatan,
+        jenis_tanaman,
+        catatan_keuangan,
+        nominal_transaksi,
+    } = req.body;
     try {
         const updateKeuangan = await Keuangan.update({
-            tanggal: req.body.tanggal,
-            kegiatan: req.body.kegiatan,
-            jenis: req.body.jenis,
-            catatan: req.body.catatan,
-            jumlah: req.body.jumlah,
+            tanggal_transaksi: tanggal_transaksi,
+            jenis_kegiatan: jenis_kegiatan,
+            jenis_tanaman: jenis_tanaman,
+            catatan_keuangan: catatan_keuangan,
+            nominal_transaksi: nominal_transaksi,
             updated_by: username,
             updated_at: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
         }, {
             where: {
-                user_id: userId,
+                user_id: user_id,
                 id_keuangan: req.query.id_keuangan,
             }
         });
         if (updateKeuangan == 0) return error
         const dataKeuangan = await Keuangan.findOne({
             where: {
-                user_id: userId,
+                user_id: user_id,
                 id_keuangan: req.query.id_keuangan,
             }
         })

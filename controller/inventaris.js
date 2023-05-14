@@ -4,11 +4,11 @@ import fs from "fs"
 
 export const postInventaris = async (req, res) => {
     const {
-        userId,
+        user_id,
         username,
-        nama,
-        jumlah,
-        catatan
+        nama_inventaris,
+        jumlah_inventaris,
+        catatan_inventaris
     } = req.body;
     if (req.files === null) return res.status(400).json({
         status: res.statusCode,
@@ -37,12 +37,13 @@ export const postInventaris = async (req, res) => {
         })
         try {
             const inventaris = await Inventaris.create({
-                nama: nama,
-                image: fileName,
-                url: url,
-                jumlah: jumlah,
-                catatan: catatan,
-                user_id: userId,
+                nama_inventaris: nama_inventaris,
+                image_name: fileName,
+                image_url: url,
+                image_size: fileSize,
+                jumlah_inventaris: jumlah_inventaris,
+                catatan_inventaris: catatan_inventaris,
+                user_id: user_id,
                 created_by: username,
             })
             res.status(201).json({
@@ -116,11 +117,11 @@ export const getInventarisById = async (req, res) => {
 }
 
 export const updateInventaris = async (req, res) => {
-    const userId = req.body.user_id
+    const user_id = req.body.user_id
     const username = req.body.username
     const searchinventaris = await Inventaris.findOne({
         where: {
-            user_id: userId,
+            user_id: user_id,
             id_inventaris: req.query.id_inventaris,
         }
     });
@@ -131,11 +132,12 @@ export const updateInventaris = async (req, res) => {
     })
 
     let fileName = "";
+    let fileSize = 0;
     if (req.files === null) {
-        fileName = searchinventaris.image
+        fileName = searchinventaris.image_name
     } else {
         const file = req.files.file
-        const fileSize = file.data.length
+        fileSize = file.data.length
         const ext = path.extname(file.name)
         fileName = file.md5 + Math.random() + ext
         const allowedType = ['.png', '.jpg', '.jpeg']
@@ -149,7 +151,7 @@ export const updateInventaris = async (req, res) => {
             message: 'Image must be less than 5 MB',
         })
 
-        const filePath = `./public/images/${searchinventaris.image}`
+        const filePath = `./public/images/${searchinventaris.image_name}`
         fs.unlinkSync(filePath)
 
         file.mv(`./public/images/${fileName}`, (err) => {
@@ -161,29 +163,30 @@ export const updateInventaris = async (req, res) => {
     }
 
     const {
-        nama,
-        jumlah,
-        catatan
+        nama_inventaris,
+        jumlah_inventaris,
+        catatan_inventaris
     } = req.body;
     const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     try {
         await Inventaris.update({
-            nama: nama,
-            image: fileName,
-            url: url,
-            jumlah: jumlah,
-            catatan: catatan,
+            nama_inventaris: nama_inventaris,
+            image_name: fileName,
+            image_url: url,
+            image_size: fileSize,
+            jumlah_inventaris: jumlah_inventaris,
+            catatan_inventaris: catatan_inventaris,
             updated_by: username,
             updated_at: new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' '),
         }, {
             where: {
-                user_id: userId,
+                user_id: user_id,
                 id_inventaris: req.query.id_inventaris
             }
         })
         const updatedinventaris = await Inventaris.findOne({
             where: {
-                user_id: userId,
+                user_id: user_id,
                 id_inventaris: req.query.id_inventaris,
             }
         })
@@ -197,7 +200,8 @@ export const updateInventaris = async (req, res) => {
         res.status(400).json({
             id_inventaris: req.query.id_inventaris,
             status: res.statusCode,
-            message: 'Gagal memperbarui Inventaris'
+            message: 'Gagal memperbarui Inventaris',
+            error: error
         })
     }
 }
@@ -217,7 +221,7 @@ export const deleteInventaris = async (req, res) => {
         })
 
         try {
-            const filePath = `public/images/${inventaris.image}`
+            const filePath = `public/images/${inventaris.image_name}`
             fs.unlinkSync(filePath)
             await inventaris.destroy({
                 where: {
