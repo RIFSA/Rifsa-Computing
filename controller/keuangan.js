@@ -134,7 +134,8 @@ export const updateKeuangan = async (req, res) => {
         res.status(400).json({
             id_keuangan: req.query.id_keuangan,
             status: res.statusCode,
-            message: 'Gagal memperbarui Keuangan'
+            message: 'Gagal memperbarui Keuangan',
+            error: error
         })
     }
 }

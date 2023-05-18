@@ -20,9 +20,10 @@ export const postInventaris = async (req, res) => {
     const fileName = file.md5 + Math.random() + ext
     const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
-    const dotRegex = /\./;
+    const dotRegex = '.';
+    const imgNameWithoutExt = path.parse(file.name).name;
 
-    if (dotRegex.test(file.name)) return res.status(422).json({
+    if (imgNameWithoutExt.includes(dotRegex)) return res.status(422).json({
         status: res.statusCode,
         message: 'invalid images contains dot',
     })
@@ -147,6 +148,13 @@ export const updateInventaris = async (req, res) => {
         const ext = path.extname(file.name)
         fileName = file.md5 + Math.random() + ext
         const allowedType = ['.png', '.jpg', '.jpeg']
+        const dotRegex = '.';
+        const imgNameWithoutExt = path.parse(file.name).name;
+
+        if (imgNameWithoutExt.includes(dotRegex)) return res.status(422).json({
+            status: res.statusCode,
+            message: 'invalid images contains dot',
+        })
 
         if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({
             status: res.statusCode,
