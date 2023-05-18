@@ -1,4 +1,5 @@
 import db from "../config/database.js";
+import { DataTypes } from "sequelize";
 
 const Keuangan = db.define('keuangan',{
     id_keuangan: {
@@ -10,7 +11,8 @@ const Keuangan = db.define('keuangan',{
         type: Date,
     },
     jenis_kegiatan: {
-        type: String,
+        type: DataTypes.ENUM,
+        values: ['DEBIT', 'KREDIT'],
     },
     jenis_tanaman: {
         type: String,

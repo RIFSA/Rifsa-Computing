@@ -20,10 +20,16 @@ export const postInventaris = async (req, res) => {
     const fileName = file.md5 + Math.random() + ext
     const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     const allowedType = ['.png', '.jpg', '.jpeg']
+    const dotRegex = /\./;
+
+    if (dotRegex.test(file.name)) return res.status(422).json({
+        status: res.statusCode,
+        message: 'invalid images contains dot',
+    })
 
     if (!allowedType.includes(ext.toLowerCase())) return res.status(422).json({
         status: res.statusCode,
-        message: 'invalid images',
+        message: 'invalid images type',
     })
     if (fileSize > 5000000) return res.status(422).json({
         status: res.statusCode,
