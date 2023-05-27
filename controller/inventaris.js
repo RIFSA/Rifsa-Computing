@@ -140,8 +140,11 @@ export const updateInventaris = async (req, res) => {
 
     let fileName = "";
     let fileSize = 0;
+    let url = "";
     if (req.files === null) {
         fileName = searchinventaris.image_name
+        url = searchinventaris.image_url
+        fileSize = searchinventaris.image_size
     } else {
         const file = req.files.file
         fileSize = file.data.length
@@ -165,6 +168,7 @@ export const updateInventaris = async (req, res) => {
             message: 'Image must be less than 5 MB',
         })
 
+        url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
         const filePath = `./public/images/${searchinventaris.image_name}`
         fs.unlinkSync(filePath)
 
@@ -181,7 +185,6 @@ export const updateInventaris = async (req, res) => {
         jumlah_inventaris,
         catatan_inventaris
     } = req.body;
-    const url = `${req.protocol}://${req.get("host")}/public/images/${fileName}`
     try {
         await Inventaris.update({
             nama_inventaris: nama_inventaris,
