@@ -1,4 +1,6 @@
 import HasilPanen from "../models/hasilpanen.js";
+import { DecodeBase64, Decrypt } from "../middleware/decrypt.js";
+import Users from "../models/user.js";
 
 export const postHasilPanen = async (req, res) => {
     const {
@@ -39,15 +41,18 @@ export const postHasilPanen = async (req, res) => {
 export const getHasilPanen = async (req, res) => {
     try {
         const userId = req.query.user_id
-        const user = await HasilPanen.findOne({
+        console.log(userId)
+        const userIdDecrypted = DecodeBase64(userId)
+        console.log(userIdDecrypted)
+        const user = await Users.findOne({
             where: {
-                user_id: userId,
+                id: userIdDecrypted,
             }
         })
         if (user === null) return err
         const hasilpanen = await HasilPanen.findAll({
             where: {
-                user_id: userId,
+                user_id: userIdDecrypted,
             }
         })
         res.status(200).json({
@@ -64,24 +69,27 @@ export const getHasilPanen = async (req, res) => {
 };
 
 export const getHasilPanenById = async (req, res) => {
+    const userId = req.query.user_id
+    const id_hasil = req.query.id_hasil
+    const userIdDecrypted = DecodeBase64(userId)
+    const id_hasilDecrypted = DecodeBase64(id_hasil)
     try {
-        const userId = req.query.user_id
         const hasilpanen = await HasilPanen.findOne({
             where: {
-                user_id: userId,
-                id_hasil: req.query.id_hasil,
+                user_id: userIdDecrypted,
+                id_hasil: id_hasilDecrypted,
             }
         })
         if (hasilpanen === null) return error
         res.status(200).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Berhasil mendapatkan hasil panen',
             data: hasilpanen
         })
     } catch (error) {
         res.status(400).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Gagal mendapatkan hasil panen'
         })
@@ -92,6 +100,8 @@ export const updateHasilPanen = async (req, res) => {
     const dataHasilPanen = req.body;
     const userId = req.body.user_id
     const username = req.body.username
+    const id_hasil = req.query.id_hasil
+    const id_hasilDecrypted = DecodeBase64(id_hasil)
     try {
         const updateHasilPanen = await HasilPanen.update({
             tanggal_hasil: dataHasilPanen.tanggal_hasil,
@@ -103,19 +113,19 @@ export const updateHasilPanen = async (req, res) => {
         }, {
             where: {
                 user_id: userId,
-                id_hasil: req.query.id_hasil,
+                id_hasil: id_hasilDecrypted,
             }
         });
         if (updateHasilPanen == 0) return error
         res.status(200).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Berhasil memperbarui hasil panen',
             data: dataHasilPanen
         })
     } catch (err) {
         res.status(400).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Gagal memperbarui hasil panen',
             error: err
@@ -124,23 +134,24 @@ export const updateHasilPanen = async (req, res) => {
 }
 
 export const deleteHasilPanen = async (req, res) => {
-    // const idUser = req.query.id_User
+    const id_hasil = req.query.id_hasil
+    const id_hasilDecrypted = DecodeBase64(id_hasil)
     try {
         const deleteHasilPanen = await HasilPanen.destroy({
             where: {
                 // id: idUser,
-                id_hasil: req.query.id_hasil,
+                id_hasil: id_hasilDecrypted,
             }
         });
         if (deleteHasilPanen == 0) return error
         res.status(200).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Berhasil menghapus hasil panen'
         })
     } catch (err) {
         res.status(400).json({
-            id_hasil: req.query.id_hasil,
+            id_hasil: id_hasilDecrypted,
             status: res.statusCode,
             message: 'Gagal menghapus hasil panen'
         })
